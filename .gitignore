@@ -1,0 +1,4 @@
+*.pyc
+*.pdf
+params.py
+.DS_Store
