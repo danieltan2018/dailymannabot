@@ -2,3 +2,4 @@
 *.pdf
 params.py
 .DS_Store
+.vscode

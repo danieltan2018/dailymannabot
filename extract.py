@@ -76,6 +76,7 @@ for x in range(len(rawtext)):
     lesson = ''
     verseref = ''
     verse = ''
+    read = ''
     endingtype = ''
     for line in ocrlines:
         line = line.strip()
@@ -88,6 +89,8 @@ for x in range(len(rawtext)):
             verseref = line
         elif line == 'To CompeLETE THE BIBLE':
             position = 4
+        elif line == 'IN 2 YEARS, READ':
+            position = 5
         elif line == 'PRAYER' or line == 'THOUGHT':
             endingtype = line
             break
@@ -98,6 +101,10 @@ for x in range(len(rawtext)):
                 lesson += line + ' '
             elif position == 3:
                 verse += line + ' '
+            elif position == 5:
+                line = '<a href="https://www.biblegateway.com/passage/?search={}&version=KJV">{}</a>'.format(
+                    line, line)
+                read += line + '\n'
 
     biblelesson = '<a href="https://www.biblegateway.com/passage/?search={}&version=KJV">{}</a>'.format(
         biblelesson, biblelesson)
@@ -113,6 +120,8 @@ for x in range(len(rawtext)):
     full += '\n\n<b>{}</b>\n<i>{}</i>'.format(verseref, verse)
     full += '\n\n' + devotion
     full += '\n\n<b>{}</b>\n{}'.format(endingtype, ending)
+    full += '\n\n<i>TO COMPLETE THE BIBLE IN 2 YEARS, READ</i>\n<b>{}</b>'.format(
+        read.strip())
     full = unidecode(full)
     quarter[today] = full
 
