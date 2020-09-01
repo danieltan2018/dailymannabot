@@ -19,8 +19,7 @@ with open('quarter.json') as datafile:
 def command():
     try:
         today = date.today().strftime("%e %B").strip().upper()
-        text = data[today]
-        text += '\n\n<i>From Daily Manna by Rev Isaac Ong</i>'
+        text = data[today].strip()
         bot.send_message(chat_id=target, text=text,
                          parse_mode=telegram.ParseMode.HTML, disable_web_page_preview=True)
     except:
