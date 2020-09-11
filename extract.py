@@ -41,10 +41,15 @@ for x in range(len(rawtext)):
     rawlines = rawpage.split('\n')
     indent = len(rawlines[0]) - len(rawlines[0].lstrip(' '))
     linenum = 1
+    verse = ''
     devotion = ''
     ending = ''
     continued = True
     for line in rawlines:
+        otherline = line[:indent]
+        otherline = otherline.strip()
+        if len(otherline) > 7:
+            verse += otherline + ' '
         line = line[indent:]
         if linenum < 3:
             dropcap = line[0]
@@ -66,6 +71,7 @@ for x in range(len(rawtext)):
         else:
             ending += line + ' '
         linenum += 1
+    verse = verse.strip()
     devotion = devotion.strip()
     ending = ending.strip()
 
@@ -75,7 +81,6 @@ for x in range(len(rawtext)):
     biblelesson = ''
     lesson = ''
     verseref = ''
-    verse = ''
     read = ''
     endingtype = ''
     for line in ocrlines:
@@ -99,8 +104,6 @@ for x in range(len(rawtext)):
                 biblelesson += line
             elif position == 2:
                 lesson += line + ' '
-            elif position == 3:
-                verse += line + ' '
             elif position == 5:
                 line = '<a href="https://www.biblegateway.com/passage/?search={}&version=KJV">{}</a>'.format(
                     line, line)
@@ -109,9 +112,6 @@ for x in range(len(rawtext)):
     biblelesson = '<a href="https://www.biblegateway.com/passage/?search={}&version=KJV">{}</a>'.format(
         biblelesson, biblelesson)
     lesson = lesson.strip()
-    verse = verse.strip()
-    while '  ' in verse:
-        verse = verse.replace('  ', ' ')
 
     today = dates[x].strftime("%e %B").strip().upper()
     full = '<b><u>{}</u></b>'.format(today)
