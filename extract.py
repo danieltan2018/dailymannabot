@@ -29,8 +29,8 @@ def daterange(date1, date2):
         yield date1 + timedelta(n)
 
 
-start_dt = date(2020, 7, 1)
-end_dt = date(2020, 9, 30)
+start_dt = date(2020, 10, 1)
+end_dt = date(2020, 12, 30)
 for dt in daterange(start_dt, end_dt):
     dates.append(dt)
 
@@ -104,7 +104,7 @@ for x in range(len(rawtext)):
                 biblelesson += line
             elif position == 2:
                 lesson += line + ' '
-            elif position == 5:
+            elif position == 5 and line:
                 line = '<a href="https://www.biblegateway.com/passage/?search={}&version=KJV">{}</a>'.format(
                     line, line)
                 read += line + '\n'
