@@ -96,7 +96,7 @@ for x in range(len(rawtext)):
             position = 4
         elif line == 'IN 2 YEARS, READ':
             position = 5
-        elif line == 'PRAYER' or line == 'THOUGHT':
+        elif line == 'PRAYER' or line == 'THOUGHT' or line == 'CHALLENGE':
             endingtype = line
             break
         else:
