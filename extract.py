@@ -30,7 +30,7 @@ def daterange(date1, date2):
 
 
 start_dt = date(2020, 10, 1)
-end_dt = date(2020, 12, 30)
+end_dt = date(2020, 12, 31)
 for dt in daterange(start_dt, end_dt):
     dates.append(dt)
 
