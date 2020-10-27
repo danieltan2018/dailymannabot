@@ -28,7 +28,7 @@ def command():
 
 
 def main():
-    schedule.every().day.at("07:00").do(command)
+    schedule.every().day.at("06:00").do(command)
     print("Bot running: task scheduled.")
 
     while True:
