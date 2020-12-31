@@ -29,8 +29,8 @@ def daterange(date1, date2):
         yield date1 + timedelta(n)
 
 
-start_dt = date(2020, 10, 1)
-end_dt = date(2020, 12, 31)
+start_dt = date(2021, 1, 1)
+end_dt = date(2021, 3, 31)
 for dt in daterange(start_dt, end_dt):
     dates.append(dt)
 
@@ -96,7 +96,7 @@ for x in range(len(rawtext)):
             position = 4
         elif line == 'IN 2 YEARS, READ':
             position = 5
-        elif line == 'PRAYER' or line == 'THOUGHT' or line == 'CHALLENGE':
+        elif line == 'PRAYER' or line == 'THOUGHT' or line == 'CHALLENGE' or line == 'MEDITATION':
             endingtype = line
             break
         else:
@@ -126,5 +126,5 @@ for x in range(len(rawtext)):
     quarter[today] = full
 
 data = json.dumps(quarter)
-with open("quarter.json", "w") as f:
+with open("quarter_new.json", "w") as f:
     f.write(data)
