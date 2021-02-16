@@ -16,19 +16,27 @@ with open('quarter.json') as datafile:
     data = json.load(datafile)
 
 
+def link(ref):
+    ref = '<a href="https://www.biblegateway.com/passage/?search={}&version=KJV">{}</a>'.format(
+        ref, ref)
+    return ref
+
+
 def command():
     try:
         today = date.today().strftime("%e %B").strip().upper()
         payload = data[today]
         full = '<b><u>{}</u></b>'.format(today)
-        full += '\n\n<b>BIBLE LESSON</b>\n' + payload['part1']
+        full += '\n\n<b>BIBLE LESSON</b>\n' + link(payload['part1'])
         full += '\n\n<b>LESSON</b>\n' + payload['part2']
         full += '\n\n<b>{}</b>\n<i>{}</i>'.format(
             payload['part3'], payload['part4'])
         full += '\n\n' + payload['part5']
         full += '\n\n<b>{}</b>\n{}'.format(payload['part6'], payload['part7'])
-        full += '\n\n<i>TO COMPLETE THE BIBLE IN 2 YEARS, READ</i>\n<b>{}</b>'.format(
-            payload['part8'])
+        full += '\n\n<i>TO COMPLETE THE BIBLE IN 2 YEARS, READ</i><b>'
+        for verse in payload['part8']:
+            full += '\n' + link(verse)
+        full += '</b>'
         bot.send_message(chat_id=target, text=full,
                          parse_mode=telegram.ParseMode.HTML, disable_web_page_preview=True)
     except:

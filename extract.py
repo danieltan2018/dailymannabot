@@ -81,7 +81,7 @@ for x in range(len(rawtext)):
     biblelesson = ''
     lesson = ''
     verseref = ''
-    read = ''
+    read = []
     endingtype = ''
     for line in ocrlines:
         line = line.strip()
@@ -105,13 +105,7 @@ for x in range(len(rawtext)):
             elif position == 2:
                 lesson += line + ' '
             elif position == 5 and line:
-                line = '<a href="https://www.biblegateway.com/passage/?search={}&version=KJV">{}</a>'.format(
-                    line, line)
-                read += line + '\n'
-
-    biblelesson = '<a href="https://www.biblegateway.com/passage/?search={}&version=KJV">{}</a>'.format(
-        biblelesson, biblelesson)
-    lesson = lesson.strip()
+                read.append(unidecode(line).strip())
 
     today = dates[x].strftime("%e %B").strip().upper()
     payload = {}
@@ -122,7 +116,7 @@ for x in range(len(rawtext)):
     payload['part5'] = unidecode(devotion).strip()
     payload['part6'] = unidecode(endingtype).strip()
     payload['part7'] = unidecode(ending).strip()
-    payload['part8'] = unidecode(read).strip()
+    payload['part8'] = read
     quarter[today] = payload
 
 data = json.dumps(quarter)
