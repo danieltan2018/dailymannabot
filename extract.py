@@ -114,16 +114,16 @@ for x in range(len(rawtext)):
     lesson = lesson.strip()
 
     today = dates[x].strftime("%e %B").strip().upper()
-    full = '<b><u>{}</u></b>'.format(today)
-    full += '\n\n<b>BIBLE LESSON</b>\n' + biblelesson
-    full += '\n\n<b>LESSON</b>\n' + lesson
-    full += '\n\n<b>{}</b>\n<i>{}</i>'.format(verseref, verse)
-    full += '\n\n' + devotion
-    full += '\n\n<b>{}</b>\n{}'.format(endingtype, ending)
-    full += '\n\n<i>TO COMPLETE THE BIBLE IN 2 YEARS, READ</i>\n<b>{}</b>'.format(
-        read.strip())
-    full = unidecode(full)
-    quarter[today] = full
+    payload = {}
+    payload['part1'] = unidecode(biblelesson).strip()
+    payload['part2'] = unidecode(lesson).strip()
+    payload['part3'] = unidecode(verseref).strip()
+    payload['part4'] = unidecode(verse).strip()
+    payload['part5'] = unidecode(devotion).strip()
+    payload['part6'] = unidecode(endingtype).strip()
+    payload['part7'] = unidecode(ending).strip()
+    payload['part8'] = unidecode(read).strip()
+    quarter[today] = payload
 
 data = json.dumps(quarter)
 with open("quarter_new.json", "w") as f:

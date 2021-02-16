@@ -19,8 +19,17 @@ with open('quarter.json') as datafile:
 def command():
     try:
         today = date.today().strftime("%e %B").strip().upper()
-        text = data[today].strip()
-        bot.send_message(chat_id=target, text=text,
+        payload = data[today]
+        full = '<b><u>{}</u></b>'.format(today)
+        full += '\n\n<b>BIBLE LESSON</b>\n' + payload['part1']
+        full += '\n\n<b>LESSON</b>\n' + payload['part2']
+        full += '\n\n<b>{}</b>\n<i>{}</i>'.format(
+            payload['part3'], payload['part4'])
+        full += '\n\n' + payload['part5']
+        full += '\n\n<b>{}</b>\n{}'.format(payload['part6'], payload['part7'])
+        full += '\n\n<i>TO COMPLETE THE BIBLE IN 2 YEARS, READ</i>\n<b>{}</b>'.format(
+            payload['part8'])
+        bot.send_message(chat_id=target, text=full,
                          parse_mode=telegram.ParseMode.HTML, disable_web_page_preview=True)
     except:
         bot.send_message(chat_id=target, text="_We are facing technical difficulties and are unable to send today's devotion_",
