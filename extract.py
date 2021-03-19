@@ -29,8 +29,8 @@ def daterange(date1, date2):
         yield date1 + timedelta(n)
 
 
-start_dt = date(2021, 1, 1)
-end_dt = date(2021, 3, 31)
+start_dt = date(2021, 4, 1)
+end_dt = date(2021, 6, 30)
 for dt in daterange(start_dt, end_dt):
     dates.append(dt)
 
