@@ -12,8 +12,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 target = '@edailymanna'
-with open('quarter.json') as datafile:
-    data = json.load(datafile)
 
 
 def link(ref):
@@ -24,6 +22,8 @@ def link(ref):
 
 def command():
     try:
+        with open('quarter.json') as datafile:
+            data = json.load(datafile)
         today = date.today().strftime("%e %B").strip().upper()
         payload = data[today]
         full = '<b><u>{}</u></b>'.format(today)
