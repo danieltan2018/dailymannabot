@@ -18,7 +18,8 @@ with open(filename, "rb") as f:
 for page in pdf:
     rawtext.append(str(page))
 
-pages = convert_from_path(filename, 500, thread_count=100)
+pages = convert_from_path(
+    filename, dpi=500, output_folder='convert', thread_count=100)
 
 for page in pages:
     ocrtext.append(str(pytesseract.image_to_string(page)))
