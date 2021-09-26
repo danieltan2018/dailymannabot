@@ -5,23 +5,11 @@ import pytesseract
 from pdf2image import convert_from_path
 from datetime import timedelta, date
 from unidecode import unidecode
+import threading
 
-rawtext = []
-ocrtext = []
+rawtext = {}
+ocrtext = {}
 dates = []
-
-filename = 'd.pdf'
-
-with open(filename, "rb") as f:
-    pdf = pdftotext.PDF(f)
-
-for page in pdf:
-    rawtext.append(str(page))
-
-pages = convert_from_path(filename, 500, thread_count=100)
-
-for page in pages:
-    ocrtext.append(str(pytesseract.image_to_string(page)))
 
 
 def daterange(date1, date2):
@@ -32,11 +20,43 @@ def daterange(date1, date2):
 start_dt = date(2021, 10, 1)
 end_dt = date(2021, 12, 31)
 for dt in daterange(start_dt, end_dt):
-    dates.append(dt)
+    dt_str = dt.strftime("%e %B").strip().upper()
+    dates.append(dt_str)
+
+filename = 'd.pdf'
+
+with open(filename, "rb") as f:
+    pdf = pdftotext.PDF(f)
+
+i = 0
+for page in pdf:
+    key = dates[i]
+    rawtext[key] = str(page)
+    i += 1
+
+pages = convert_from_path(filename, 500, thread_count=100)
+
+
+def ocr(key, img):
+    global ocrtext
+    ocrtext[key] = str(pytesseract.image_to_string(img))
+
+
+threads = []
+i = 0
+for page in pages:
+    key = dates[i]
+    t = threading.Thread(target=ocr, args=[key, page])
+    t.start()
+    threads.append(t)
+    i += 1
+
+for thread in threads:
+    thread.join()
 
 quarter = {}
 
-for x in range(len(rawtext)):
+for x in dates:
     rawpage = rawtext[x]
     rawlines = rawpage.split('\n')
     indent = len(rawlines[0]) - len(rawlines[0].lstrip(' '))
@@ -107,7 +127,6 @@ for x in range(len(rawtext)):
             elif position == 5 and line:
                 read.append(unidecode(line).strip())
 
-    today = dates[x].strftime("%e %B").strip().upper()
     payload = {}
     payload['part1'] = unidecode(biblelesson).strip()
     payload['part2'] = unidecode(lesson).strip()
@@ -117,7 +136,7 @@ for x in range(len(rawtext)):
     payload['part6'] = unidecode(endingtype).strip()
     payload['part7'] = unidecode(ending).strip()
     payload['part8'] = read
-    quarter[today] = payload
+    quarter[x] = payload
 
 data = json.dumps(quarter)
 with open("quarter_new.json", "w") as f:
