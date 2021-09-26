@@ -43,13 +43,10 @@ def ocr(key, img):
 
 
 threads = []
-i = 0
-for page in pages:
-    key = dates[i]
-    t = threading.Thread(target=ocr, args=[key, page])
+for i in range(len(pages)):
+    t = threading.Thread(target=ocr, args=[dates[i], pages[i]])
     t.start()
     threads.append(t)
-    i += 1
 
 for thread in threads:
     thread.join()
