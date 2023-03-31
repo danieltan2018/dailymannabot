@@ -33,10 +33,10 @@ def command():
             payload['part3'], payload['part4'])
         full += '\n\n' + payload['part5']
         full += '\n\n<b>{}</b>\n{}'.format(payload['part6'], payload['part7'])
-        full += '\n\n<i>TO COMPLETE THE BIBLE IN 2 YEARS, READ</i><b>'
-        for verse in payload['part8']:
-            full += '\n' + link(verse)
-        full += '</b>'
+        # full += '\n\n<i>TO COMPLETE THE BIBLE IN 2 YEARS, READ</i><b>'
+        # for verse in payload['part8']:
+        #     full += '\n' + link(verse)
+        # full += '</b>'
         bot.send_message(chat_id=target, text=full,
                          parse_mode=telegram.ParseMode.HTML, disable_web_page_preview=True)
     except:
