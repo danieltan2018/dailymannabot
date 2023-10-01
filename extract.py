@@ -17,8 +17,8 @@ def daterange(date1, date2):
         yield date1 + timedelta(n)
 
 
-start_dt = date(2023, 7, 1)
-end_dt = date(2023, 9, 30)
+start_dt = date(2023, 10, 1)
+end_dt = date(2023, 12, 31)
 for dt in daterange(start_dt, end_dt):
     dt_str = dt.strftime("%e %B").strip().upper()
     dates.append(dt_str)
