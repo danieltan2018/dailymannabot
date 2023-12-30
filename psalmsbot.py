@@ -31,7 +31,7 @@ def command():
         payload = data[today]
         full = "<u>{}</u>".format(today)
         full += "\n\n<b>{}</b>".format(link(payload["psalm"]))
-        full += "\n" + payload["title"]
+        full += "\n<b>{}</b>".format(payload["title"])
         full += "\n\n<i>{}</i>".format(payload["verse"])
         full += "\n\n" + payload["text"]
         bot.send_message(
