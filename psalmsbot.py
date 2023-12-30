@@ -13,7 +13,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-target = "@test301223"
+target = "@thruthepsalms"
 
 
 def link(ref):
