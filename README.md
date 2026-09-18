@@ -95,8 +95,10 @@ Pushing to `master` runs the tests and, if they pass, `sam deploy`s the stack â€
    | `BOT_TOKEN`           | Telegram bot token                      |
    | `ALARM_EMAIL`         | Optional; where to send failure alerts  |
 
-5. **Retire the old hand-made function**: once a test invocation (below) succeeds, disable its
-   EventBridge rule, and delete it after the new stack has posted for a day or two.
+5. **Push to `master`**. The workflow's first run confirms the role and secrets work.
+
+(The original Psalms function lived in a separate AWS account and was retired on 2026-09-18, the
+day this stack went live; that account is being closed.)
 
 ### Day to day
 
