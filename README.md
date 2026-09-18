@@ -5,9 +5,10 @@ them; an EventBridge schedule per channel invokes it with `{"channel": "<name>"}
 delivery time, it looks up today's entry in the channel's data file and posts it with the Telegram
 Bot API. Pure Python 3.12 standard library — no dependencies.
 
-| Channel  | Telegram                                      | Delivery              |
-|----------|-----------------------------------------------|-----------------------|
-| `psalms` | [@thruthepsalms](https://t.me/thruthepsalms)  | 06:00 Asia/Singapore  |
+| Channel          | Source                                        | Telegram                                     | Delivery             |
+|------------------|-----------------------------------------------|----------------------------------------------|----------------------|
+| `psalms`         | *Thru' the Psalms in one year* (Isaac Ong)    | [@thruthepsalms](https://t.me/thruthepsalms) | 06:00 Asia/Singapore |
+| `our_daily_walk` | *Our Daily Walk* (F.B. Meyer)                 | *not yet created* — schedule commented out   | 06:00 Asia/Singapore |
 
 ## Layout
 
@@ -17,16 +18,18 @@ src/
   handler.py             Lambda entry point
   channels.py            channel registry — chat id, data file, renderer, timezone
   telegram.py            sendMessage client
-  renderers/psalms.py    turns a psalms.json entry into a Telegram HTML message
-  data/psalms.json       366 entries keyed "D MONTH" (e.g. "2 MAY"), one per day of a leap year
+  renderers/             one module per data shape: FIELDS + render(key, entry) -> Telegram HTML
+  data/                  one JSON per channel, keyed "D MONTH" (e.g. "2 MAY"), one entry per day of a leap year
 tests/                   python3 -m unittest
-tools/extract_psalms.py  regenerates psalms.json from the source PDF (needs PyMuPDF)
+tools/                   scripts that (re)generate the data files
 deploy/                  IAM policy documents for the GitHub Actions deploy role
 ```
 
 ## Data provenance
 
-`src/data/psalms.json` is generated, not hand-edited. It comes from *Thru' the Psalms in one year
+Data files are generated, not hand-edited.
+
+**`psalms.json`** comes from *Thru' the Psalms in one year
 with Spurgeon's Treasury of David* (Isaac Ong, Calvary Bible-Presbyterian Church, 2012), read
 straight from the PDF's text layer by [tools/extract_psalms.py](tools/extract_psalms.py). Small-caps
 LORD, accents, paragraph and poem line breaks are preserved from the print; two typos in the

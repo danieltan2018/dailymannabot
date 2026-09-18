@@ -10,7 +10,7 @@ from datetime import date
 from pathlib import Path
 from types import ModuleType
 
-from renderers import psalms
+from renderers import our_daily_walk, psalms
 
 DATA_DIR = Path(__file__).with_name("data")
 
@@ -37,6 +37,12 @@ CHANNELS = {
         chat_id="@thruthepsalms",
         data_file="psalms.json",
         renderer=psalms,
+    ),
+    "our_daily_walk": Channel(
+        name="our_daily_walk",
+        chat_id="@REPLACE_ME",   # TODO: set to the real channel and uncomment its schedule in template.yaml
+        data_file="our_daily_walk.json",
+        renderer=our_daily_walk,
     ),
 }
 
