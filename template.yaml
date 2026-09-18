@@ -28,6 +28,10 @@ Resources:
       Environment:
         Variables:
           BOT_TOKEN: !Ref BotToken
+      # No async retries: a retry after Telegram already accepted the message
+      # would post the devotion twice. A failure alarms; re-send with `make invoke`.
+      EventInvokeConfig:
+        MaximumRetryAttempts: 0
       Events:
         # One schedule per channel. The Input names the channel; the function
         # works out the date itself, so the cron only sets delivery time.

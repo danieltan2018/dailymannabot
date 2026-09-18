@@ -3,7 +3,7 @@
 A family of Telegram channels that each receive a daily devotion. One AWS Lambda serves all of
 them; an EventBridge schedule per channel invokes it with `{"channel": "<name>"}` at that channel's
 delivery time, it looks up today's entry in the channel's data file and posts it with the Telegram
-Bot API. Pure Python 3.12 standard library — no dependencies.
+Bot API. Python 3.12 standard library plus `tzdata` (so `zoneinfo` works on the Lambda runtime).
 
 | Channel          | Source                                        | Telegram                                     | Delivery             |
 |------------------|-----------------------------------------------|----------------------------------------------|----------------------|
@@ -44,7 +44,8 @@ python3 -m unittest
 
 Failures are loud and private: if anything goes wrong (unknown channel, missing date, Telegram
 rejects the message) the function raises, nothing reaches subscribers, the invocation is recorded
-as failed, and the `ErrorsAlarm` emails you if `AlarmEmail` is set.
+as failed, and the `ErrorsAlarm` emails you if `AlarmEmail` is set. Lambda's async retries are
+turned off so a retry can never post a devotion twice; after a failure, re-send with `make invoke`.
 
 ## Adding a channel
 
