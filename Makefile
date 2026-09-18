@@ -13,7 +13,7 @@ build:
 ## Deploy from your machine. Needs BOT_TOKEN in the environment; ALARM_EMAIL is optional.
 deploy: build
 	@test -n "$(BOT_TOKEN)" || (echo "BOT_TOKEN is not set" && exit 1)
-	sam deploy --parameter-overrides BotToken=$(BOT_TOKEN) AlarmEmail=$(ALARM_EMAIL)
+	@sam deploy --parameter-overrides BotToken=$(BOT_TOKEN) AlarmEmail=$(ALARM_EMAIL)
 
 ## Send a channel's devotion now. Override DATE=YYYY-MM-DD and CHAT_ID=@somewhere to test safely.
 invoke:

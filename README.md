@@ -3,7 +3,7 @@
 A family of Telegram channels that each receive a daily devotion. One AWS Lambda serves all of
 them; an EventBridge schedule per channel invokes it with `{"channel": "<name>"}` at that channel's
 delivery time, it looks up today's entry in the channel's data file and posts it with the Telegram
-Bot API. Python 3.12 standard library plus `tzdata` (so `zoneinfo` works on the Lambda runtime).
+Bot API. Python 3.13 standard library plus `tzdata` (so `zoneinfo` works on the Lambda runtime).
 
 | Channel          | Source                                        | Telegram                                     | Delivery             |
 |------------------|-----------------------------------------------|----------------------------------------------|----------------------|
