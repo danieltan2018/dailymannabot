@@ -1,0 +1,38 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Stacks",
+      "Effect": "Allow",
+      "Action": "cloudformation:*",
+      "Resource": [
+        "arn:aws:cloudformation:ap-southeast-1:ACCOUNT_ID:stack/devotion-bots/*",
+        "arn:aws:cloudformation:ap-southeast-1:ACCOUNT_ID:stack/aws-sam-cli-managed-default/*"
+      ]
+    },
+    {
+      "Sid": "SamTransform",
+      "Effect": "Allow",
+      "Action": "cloudformation:CreateChangeSet",
+      "Resource": "arn:aws:cloudformation:ap-southeast-1:aws:transform/Serverless-2016-10-31"
+    },
+    {
+      "Sid": "DeploymentArtifacts",
+      "Effect": "Allow",
+      "Action": "s3:*",
+      "Resource": ["arn:aws:s3:::aws-sam-cli-managed-default-*", "arn:aws:s3:::aws-sam-cli-managed-default-*/*"]
+    },
+    {
+      "Sid": "StackResources",
+      "Effect": "Allow",
+      "Action": ["lambda:*", "scheduler:*", "logs:*", "sns:*", "cloudwatch:*"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ExecutionRoles",
+      "Effect": "Allow",
+      "Action": ["iam:CreateRole", "iam:DeleteRole", "iam:GetRole", "iam:UpdateRole", "iam:PassRole", "iam:AttachRolePolicy", "iam:DetachRolePolicy", "iam:PutRolePolicy", "iam:DeleteRolePolicy", "iam:GetRolePolicy", "iam:TagRole", "iam:UntagRole"],
+      "Resource": "arn:aws:iam::ACCOUNT_ID:role/devotion-bots-*"
+    }
+  ]
+}
