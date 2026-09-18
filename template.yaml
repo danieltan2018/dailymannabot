@@ -45,17 +45,16 @@ Resources:
             RetryPolicy:
               MaximumRetryAttempts: 2
               MaximumEventAgeInSeconds: 1800
-        # Uncomment once the channel exists and its chat_id is set in src/channels.py.
-        # OurDailyWalk:
-        #   Type: ScheduleV2
-        #   Properties:
-        #     Name: !Sub "${AWS::StackName}-our-daily-walk"
-        #     ScheduleExpression: cron(0 6 * * ? *)
-        #     ScheduleExpressionTimezone: Asia/Singapore
-        #     Input: '{"channel": "our_daily_walk"}'
-        #     RetryPolicy:
-        #       MaximumRetryAttempts: 2
-        #       MaximumEventAgeInSeconds: 1800
+        OurDailyWalk:
+          Type: ScheduleV2
+          Properties:
+            Name: !Sub "${AWS::StackName}-our-daily-walk"
+            ScheduleExpression: cron(0 6 * * ? *)
+            ScheduleExpressionTimezone: Asia/Singapore
+            Input: '{"channel": "our_daily_walk"}'
+            RetryPolicy:
+              MaximumRetryAttempts: 2
+              MaximumEventAgeInSeconds: 1800
 
   FunctionLogGroup:
     Type: AWS::Logs::LogGroup

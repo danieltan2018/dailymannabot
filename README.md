@@ -8,7 +8,7 @@ Bot API. Python 3.12 standard library plus `tzdata` (so `zoneinfo` works on the 
 | Channel          | Source                                        | Telegram                                     | Delivery             |
 |------------------|-----------------------------------------------|----------------------------------------------|----------------------|
 | `psalms`         | *Thru' the Psalms in one year* (Isaac Ong)    | [@thruthepsalms](https://t.me/thruthepsalms) | 06:00 Asia/Singapore |
-| `our_daily_walk` | *Our Daily Walk* (F.B. Meyer)                 | *not yet created* — schedule commented out   | 06:00 Asia/Singapore |
+| `our_daily_walk` | *Our Daily Walk* (F.B. Meyer)                 | [@ourdailywalkdevo](https://t.me/ourdailywalkdevo) | 06:00 Asia/Singapore |
 
 ## Layout
 
