@@ -1,5 +1,7 @@
+__pycache__/
 *.pyc
+.aws-sam/
+.venv/
 *.pdf
-params.py
 .DS_Store
-.vscode
+.vscode/

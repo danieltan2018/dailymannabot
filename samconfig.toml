@@ -1,0 +1,17 @@
+# Shared SAM CLI settings. Secrets (BotToken) are passed on the command line —
+# see the Makefile and .github/workflows/deploy.yml — never stored here.
+version = 0.1
+
+[default.global.parameters]
+stack_name = "devotion-bots"
+region = "ap-southeast-1"
+
+[default.build.parameters]
+cached = true
+parallel = true
+
+[default.deploy.parameters]
+resolve_s3 = true
+capabilities = "CAPABILITY_IAM"
+confirm_changeset = false
+fail_on_empty_changeset = false

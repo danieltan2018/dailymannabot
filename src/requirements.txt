@@ -1,0 +1,2 @@
+# zoneinfo needs an IANA database; the Lambda runtime may not ship one.
+tzdata
