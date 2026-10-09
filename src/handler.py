@@ -5,15 +5,18 @@ testing you can also pass "date" (ISO, e.g. "2024-05-02") and "chat_id" (to
 post somewhere other than the channel's real chat).
 
 Any failure — unknown channel, missing date entry, Telegram error — raises,
-so the invocation is recorded as failed in CloudWatch and nothing reaches
-subscribers.
+so the invocation is recorded as failed in CloudWatch. A response failure
+can happen after Telegram has accepted the message.
 """
 
+import logging
 from datetime import date, datetime
 from zoneinfo import ZoneInfo
 
 import telegram
 from channels import CHANNELS, date_key
+
+logger = logging.getLogger(__name__)
 
 
 def lambda_handler(event, context):
@@ -30,7 +33,11 @@ def lambda_handler(event, context):
     key = date_key(day)
 
     text = channel.render(key, channel.load_data()[key])
-    result = telegram.send_message(event.get("chat_id") or channel.chat_id, text)
+    try:
+        result = telegram.send_message(event.get("chat_id") or channel.chat_id, text)
+    except Exception:
+        logger.exception("Devotional send failed: channel=%s, date=%s", channel.name, key)
+        raise
     return {
         "channel": channel.name,
         "date": key,

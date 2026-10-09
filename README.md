@@ -27,7 +27,7 @@ deploy/                  IAM policy documents for the GitHub Actions deploy role
 
 ## Data provenance
 
-Data files are generated, not hand-edited.
+Data files are generated from their sources, then corrected where reviewed transcription errors are found.
 
 **`psalms.json`** comes from *Thru' the Psalms in one year
 with Spurgeon's Treasury of David* (Isaac Ong, Calvary Bible-Presbyterian Church, 2012), read
@@ -42,10 +42,25 @@ python3 -m venv .venv && .venv/bin/pip install pymupdf
 python3 -m unittest
 ```
 
-Failures are loud and private: if anything goes wrong (unknown channel, missing date, Telegram
-rejects the message) the function raises, nothing reaches subscribers, the invocation is recorded
-as failed, and the `ErrorsAlarm` emails you if `AlarmEmail` is set. Lambda's async retries are
-turned off so a retry can never post a devotion twice; after a failure, re-send with `make invoke`.
+**`our_daily_walk.json`** comes from the Lifers app's Life BPC transcription,
+converted by [tools/import_our_daily_walk.py](tools/import_our_daily_walk.py).
+The stored JSON includes reviewed wording and punctuation corrections. Regenerating
+from the original sources can overwrite those corrections; compare the resulting
+diff before replacing the checked-in data.
+
+## Delivery failures
+
+Transient connection setup failures are retried up to three times, with waits of 0.5 and 1 second.
+Each connection operation uses a 3-second timeout; after connection setup, request and response
+operations use a 10-second timeout. Retries happen before the devotional is transmitted.
+Request-write errors, response-read errors, and HTTP/API rejections are not retried, since a lost
+response may mean Telegram already posted the message.
+
+If an error remains, the function raises, the invocation is recorded as failed, and the
+`ErrorsAlarm` emails you if `AlarmEmail` is set. Send failures log the channel and date.
+Lambda's async retries are turned off to avoid posting a devotion twice. After a failure,
+check the channel before re-sending with `make invoke`: a response failure can occur after
+Telegram has accepted the message.
 
 ## Adding a channel
 
