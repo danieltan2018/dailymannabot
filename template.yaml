@@ -28,10 +28,14 @@ Resources:
       Environment:
         Variables:
           BOT_TOKEN: !Ref BotToken
-      # No async retries: a retry after Telegram already accepted the message
-      # would post the devotion twice. A failure alarms; re-send with `make invoke`.
-      EventInvokeConfig:
-        MaximumRetryAttempts: 0
+      Policies:
+        - !If
+          - HasAlarmEmail
+          - Statement:
+              - Effect: Allow
+                Action: sns:Publish
+                Resource: !Ref ErrorsTopic
+          - !Ref AWS::NoValue
       Events:
         # One schedule per channel. The Input names the channel; the function
         # works out the date itself, so the cron only sets delivery time.
@@ -55,6 +59,21 @@ Resources:
             RetryPolicy:
               MaximumRetryAttempts: 2
               MaximumEventAgeInSeconds: 1800
+
+  # Use the same logical ID SAM generated previously. An explicit resource lets
+  # CloudFormation omit the optional destination without SAM creating a topic.
+  DevotionFunctionEventInvokeConfig:
+    Type: AWS::Lambda::EventInvokeConfig
+    Properties:
+      FunctionName: !Ref DevotionFunction
+      Qualifier: "$LATEST"
+      # Never retry after Telegram may already have accepted the message.
+      MaximumRetryAttempts: 0
+      DestinationConfig: !If
+        - HasAlarmEmail
+        - OnFailure:
+            Destination: !Ref ErrorsTopic
+        - !Ref AWS::NoValue
 
   FunctionLogGroup:
     Type: AWS::Logs::LogGroup

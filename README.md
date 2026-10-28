@@ -57,10 +57,30 @@ Request-write errors, response-read errors, and HTTP/API rejections are not retr
 response may mean Telegram already posted the message.
 
 If an error remains, the function raises, the invocation is recorded as failed, and the
-`ErrorsAlarm` emails you if `AlarmEmail` is set. Send failures log the channel and date.
+`ErrorsAlarm` emails you if `AlarmEmail` is set. Lambda also sends each failed asynchronous
+invocation's record to the same SNS topic. This detailed email contains JSON with the original
+event (including the channel), timestamp, request ID, and error response, including the exception
+message and stack trace when available. The existing alarm remains as a backup, so a failure can
+produce both a detailed email and an alarm email. Send failures log the channel and date.
 Lambda's async retries are turned off to avoid posting a devotion twice. After a failure,
 check the channel before re-sending with `make invoke`: a response failure can occur after
 Telegram has accepted the message.
+
+To test detailed emails after deployment, invoke the function asynchronously with an invalid
+channel. This fails before contacting Telegram:
+
+```bash
+FUNCTION_NAME=$(aws cloudformation describe-stacks --stack-name devotion-bots \
+  --region ap-southeast-1 \
+  --query 'Stacks[0].Outputs[?OutputKey==`FunctionName`].OutputValue' --output text)
+aws lambda invoke --function-name "$FUNCTION_NAME" --region ap-southeast-1 \
+  --invocation-type Event --cli-binary-format raw-in-base64-out \
+  --payload '{"channel":"notification-test-invalid-channel"}' /tmp/devotion-notification-test.json
+```
+
+The initial response only confirms that Lambda accepted the event. Verify that the detailed
+email arrives and contains the invalid channel and `ValueError`. Synchronous invocations such as
+`make invoke` do not trigger this destination. The email subscription must already be confirmed.
 
 ## Adding a channel
 
